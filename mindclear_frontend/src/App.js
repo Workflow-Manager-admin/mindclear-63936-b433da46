@@ -1,16 +1,28 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './App.css';
 
 /**
  * Full-screen gradient background, centered glassmorphic card,
  * app name top-left, "View Journey" button top-right.
  */
-// PUBLIC_INTERFACE
+/*
+ * PUBLIC_INTERFACE
+ */
 function App() {
   // State for textarea content and animating state
   const [thought, setThought] = useState('');
   const [animate, setAnimate] = useState(false);
+  const [fadeIn, setFadeIn] = useState(true);
   const cardRef = useRef(null);
+
+  // Fade-in effect on initial mount
+  useEffect(() => {
+    setFadeIn(true); // Show fade-in when mounted
+    const fadeTimeout = setTimeout(() => {
+      setFadeIn(false); // Remove .fade-in after transition to avoid stacking CSS
+    }, 700);
+    return () => clearTimeout(fadeTimeout);
+  }, []);
 
   // PUBLIC_INTERFACE
   function handleShredIt() {
@@ -25,7 +37,11 @@ function App() {
   return (
     <div className="mindclear-gradient-bg">
       <div
-        className={`mindclear-center-card${animate ? ' shred-fade-bounce' : ''}`}
+        className={
+          `mindclear-center-card` +
+          (fadeIn ? ' fade-in' : '') +
+          (animate ? ' shred-fade-bounce' : '')
+        }
         ref={cardRef}
       >
         <div className="mindclear-card-header">
