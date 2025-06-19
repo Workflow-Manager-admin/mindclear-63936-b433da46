@@ -9,9 +9,8 @@ import './App.css';
  * PUBLIC_INTERFACE
  */
 function App() {
-  // State for textarea content and animating state
-  const [thought, setThought] = useState('');
-  const [animate, setAnimate] = useState(false);
+  // State for the Zen quote
+  const [zenQuote, setZenQuote] = useState('');
   const [fadeIn, setFadeIn] = useState(true);
   const cardRef = useRef(null);
 
@@ -24,23 +23,32 @@ function App() {
     return () => clearTimeout(fadeTimeout);
   }, []);
 
-  // PUBLIC_INTERFACE
-  function handleShredIt() {
-    setThought('');
-    setAnimate(true);
-    // After animation duration, remove animation classes
-    setTimeout(() => {
-      setAnimate(false);
-    }, 850); // Sync with CSS animation duration
-  }
+  // Fetch Zen quote on mount
+  useEffect(() => {
+    // PUBLIC_INTERFACE
+    async function fetchZenQuote() {
+      try {
+        const response = await fetch('https://zenquotes.io/api/random');
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
+        if (Array.isArray(data) && data.length && data[0].q && data[0].a) {
+          setZenQuote(`"${data[0].q}"\n– ${data[0].a}`);
+        } else {
+          setZenQuote('A moment of mindfulness is never wasted.');
+        }
+      } catch (err) {
+        setZenQuote('Unable to load a quote right now.');
+      }
+    }
+    fetchZenQuote();
+  }, []);
 
   return (
     <div className="mindclear-gradient-bg">
       <div
         className={
           `mindclear-center-card` +
-          (fadeIn ? ' fade-in' : '') +
-          (animate ? ' shred-fade-bounce' : '')
+          (fadeIn ? ' fade-in' : '')
         }
         ref={cardRef}
       >
@@ -58,27 +66,24 @@ function App() {
             View Journey
           </button>
         </div>
-        {/* Main content area can go here */}
+        {/* Main content area displays Zen Quote only */}
         <div className="mindclear-card-content">
-          <div className="mindclear-thought-box-section">
-            <textarea
-              className="mindclear-thought-textarea"
-              placeholder="Type what’s bothering you..."
-              rows={5}
-              value={thought}
-              onChange={e => setThought(e.target.value)}
-            />
-            <div className="mindclear-privacy-note">
-              Everything is private and safe here.
-            </div>
-            <button
-              className="btn btn-large shred-btn"
-              style={{ marginTop: 19 }}
-              type="button"
-              onClick={handleShredIt}
-            >
-              🔒 Shred It
-            </button>
+          <div
+            style={{
+              width: "100%",
+              minHeight: "110px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              fontSize: "1.17rem",
+              fontWeight: 500,
+              color: "#3f4461",
+              textAlign: "center",
+              whiteSpace: "pre-line"
+            }}
+          >
+            {zenQuote || "Loading..."}
           </div>
         </div>
       </div>
