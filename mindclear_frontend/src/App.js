@@ -24,7 +24,16 @@ function App() {
         </div>
         {/* Main content area can go here */}
         <div className="mindclear-card-content">
-          {/* Placeholder for future content */}
+          <div className="mindclear-thought-box-section">
+            <textarea
+              className="mindclear-thought-textarea"
+              placeholder="Type what’s bothering you..."
+              rows={5}
+            />
+            <div className="mindclear-privacy-note">
+              Everything is private and safe here.
+            </div>
+          </div>
         </div>
       </div>
     </div>
