@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import './App.css';
 
 /**
@@ -7,11 +7,31 @@ import './App.css';
  */
 // PUBLIC_INTERFACE
 function App() {
+  // State for textarea content and animating state
+  const [thought, setThought] = useState('');
+  const [animate, setAnimate] = useState(false);
+  const cardRef = useRef(null);
+
+  // PUBLIC_INTERFACE
+  function handleShredIt() {
+    setThought('');
+    setAnimate(true);
+    // After animation duration, remove animation classes
+    setTimeout(() => {
+      setAnimate(false);
+    }, 850); // Sync with CSS animation duration
+  }
+
   return (
     <div className="mindclear-gradient-bg">
-      <div className="mindclear-center-card">
+      <div
+        className={`mindclear-center-card${animate ? ' shred-fade-bounce' : ''}`}
+        ref={cardRef}
+      >
         <div className="mindclear-card-header">
-          <div className="mindclear-app-name">Thought Detox <span role="img" aria-label="meditate">🧘‍♀️</span></div>
+          <div className="mindclear-app-name">
+            Thought Detox <span role="img" aria-label="meditate">🧘‍♀️</span>
+          </div>
           <button
             className="mindclear-journey-btn"
             // Placeholder for future navigation
@@ -29,10 +49,20 @@ function App() {
               className="mindclear-thought-textarea"
               placeholder="Type what’s bothering you..."
               rows={5}
+              value={thought}
+              onChange={e => setThought(e.target.value)}
             />
             <div className="mindclear-privacy-note">
               Everything is private and safe here.
             </div>
+            <button
+              className="btn btn-large shred-btn"
+              style={{ marginTop: 19 }}
+              type="button"
+              onClick={handleShredIt}
+            >
+              🔒 Shred It
+            </button>
           </div>
         </div>
       </div>

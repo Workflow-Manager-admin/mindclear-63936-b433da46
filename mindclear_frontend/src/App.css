@@ -249,3 +249,57 @@ body {
   padding: 12px 24px;
   font-size: 1.1rem;
 }
+
+/* --- "Shred It" button special style --- */
+.shred-btn {
+  background: linear-gradient(90deg, var(--base-light) 0%, var(--mc-gradient2) 100%);
+  color: #fff;
+  font-size: 1.22rem;
+  font-weight: 600;
+  border-radius: 8px;
+  margin-top: 16px;
+  margin-bottom: 2px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 24px 0 rgba(24, 32, 84, 0.14), 0 2px 4px 0 rgba(0,0,0,0.05);
+  transition: background 0.22s, transform 0.16s;
+}
+.shred-btn:hover,
+.shred-btn:focus-visible {
+  background: linear-gradient(90deg, #8de2ff 0%, var(--mc-gradient2) 100%);
+  color: #311965;
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* ---------- Card fade + bounce animation ---------- */
+@keyframes shredFadeBounce {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: none;
+  }
+  60% {
+    opacity: 0.75;
+    transform: scale(1.09, 0.95) translateY(-18px);
+    filter: blur(0.5px);
+  }
+  78% {
+    opacity: 0.47;
+    transform: scale(0.98, 1.04) translateY(12px);
+    filter: blur(2.5px);
+  }
+  85% {
+    opacity: 0.19;
+    transform: scale(1.04, 0.9) translateY(-9px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.97, 0.93) translateY(32px);
+    filter: blur(6px);
+  }
+}
+.shred-fade-bounce {
+  animation: shredFadeBounce 0.82s cubic-bezier(0.19, 1, 0.22, 1);
+  animation-fill-mode: both;
+  pointer-events: none;
+}
