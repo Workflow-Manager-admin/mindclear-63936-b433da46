@@ -1,0 +1,4 @@
+{
+    "command": "npm run test",
+    "working_directory": "/home/kavia/workspace/code-generation/mindclear-63936-b433da46/mindclear_frontend"
+}
